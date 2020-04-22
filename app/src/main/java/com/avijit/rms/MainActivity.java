@@ -25,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        wantToDonateButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivity(new Intent(getApplicationContext(),PendingRequest.class));
+                return false;
+            }
+        });
         needHelpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

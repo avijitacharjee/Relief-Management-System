@@ -40,7 +40,7 @@
             android:textStyle="bold"
             />-->
         <Button
-            android:id="@+id/signup_intent_button"
+            android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add"
@@ -92,6 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Full name"
+
                     android:textColorHint="#fff"
                     android:layout_marginLeft="15dp"
                     android:background="#00000000"
@@ -119,7 +120,7 @@
                     android:src="@drawable/user"
                     android:layout_gravity="center"/>
                 <EditText
-                    android:id="@+id/user_name_edit_text"
+                    android:id="@+id/nid_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="NID"
@@ -140,6 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#20000000"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:padding="16dp">
                 <ImageView

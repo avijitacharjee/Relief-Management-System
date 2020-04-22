@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -25,8 +26,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class FamilyRegistration extends AppCompatActivity {
-    Button chooseImageButton;
-    EditText NID, contactNo, members, earningMembers;
+    Button chooseImageButton,addButton;
+    EditText fullName,nid, contactNo, members, earningMembers;
 
     ImageView imageView;
 
@@ -40,6 +41,23 @@ public class FamilyRegistration extends AppCompatActivity {
 
         chooseImageButton = findViewById(R.id.img);
         imageView=findViewById(R.id.imageinsert);
+        fullName = findViewById(R.id.full_name_edit_text);
+        nid = findViewById(R.id.nid_edit_text);
+        contactNo = findViewById(R.id.phone_edit_text);
+        members = findViewById(R.id.members_edit_text);
+        earningMembers = findViewById(R.id.earning_members_edit_text);
+        addButton = findViewById(R.id.add_button);
+        
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFormValid())
+                {
+                    Toast.makeText(FamilyRegistration.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         chooseImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,5 +142,56 @@ public class FamilyRegistration extends AppCompatActivity {
         }
 
         imageView.setImageBitmap(bm);
+    }
+    private boolean isFormValid()
+    {
+        boolean valid = true;
+        if(fullName.getText().toString().length()==0 || (!fullName.getText().toString().contains(" ")))
+        {
+            valid = false;
+            fullName.setError("Full Name is required");
+        }
+        if(nid.getText().toString().length()==0)
+        {
+            valid=false;
+            nid.setError("NID is required");
+        }
+        else if((!nid.getText().toString().matches("\\d+")) || (nid.getText().toString().length()!=16))
+        {
+            valid = false;
+            nid.setError("Invalid NID");
+        }
+        if(contactNo.getText().toString().length()==0)
+        {
+            valid= false;
+            contactNo.setError("phone no is required");
+        }
+        else if((!contactNo.getText().toString().matches("\\d+")) || (nid.getText().toString().length()!=11) || (nid.getText().toString().length()!=14) )
+        {
+            valid = false;
+            contactNo.setError("Invalid phone no");
+        }
+        if((!members.getText().toString().matches("\\d+")))
+        {
+            valid = false;
+            members.setError("Please check");
+        }
+        else if(Integer.parseInt(members.getText().toString())>20)
+        {
+            valid=false;
+            members.setError("Please check");
+        }
+        if((!earningMembers.getText().toString().matches("\\d+")))
+        {
+            valid = false;
+            earningMembers.setError("Please check");
+        }
+        else if(Integer.parseInt(earningMembers.getText().toString())>20)
+        {
+            valid=false;
+            earningMembers.setError("Please check");
+        }
+        
+        return valid;
     }
 }

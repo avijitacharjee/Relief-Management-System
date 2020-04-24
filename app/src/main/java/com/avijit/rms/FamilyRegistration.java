@@ -3,6 +3,7 @@ package com.avijit.rms;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,12 +19,23 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FamilyRegistration extends AppCompatActivity {
     Button chooseImageButton,addButton;
@@ -34,6 +46,7 @@ public class FamilyRegistration extends AppCompatActivity {
     private Bitmap bitmap;
     int PICK_IMAGE_REQUEST=111;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +64,78 @@ public class FamilyRegistration extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFormValid())
+
+                final String name = fullName.getText().toString();
+
+
+
+
+                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                String url = "http://192.168.43.221/api/files";
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                progressDialog.dismiss();
+                                Toast.makeText(FamilyRegistration.this, response, Toast.LENGTH_SHORT).show();
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                progressDialog.dismiss();
+                                Toast.makeText(FamilyRegistration.this, error.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                ){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] imageBytes = baos.toByteArray();
+                        final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+                        Map<String,String> params = new HashMap<>();
+                        params.put("name",fullName.getText().toString());
+                        params.put("image",imageString);
+                        return params;
+                    }
+
+                    @Override
+                    public Map getHeaders() throws AuthFailureError {
+                        HashMap headers = new HashMap();
+                        headers.put("Content-Type", "application/json");
+                        headers.put("Content-Type", "application/x-www-form-urlencoded");
+                        return headers;
+                    }
+                };
+
+                stringRequest.setRetryPolicy(new RetryPolicy() {
+                    @Override
+                    public int getCurrentTimeout() {
+                        return 50000;
+                    }
+
+                    @Override
+                    public int getCurrentRetryCount() {
+                        return 50000;
+                    }
+
+                    @Override
+                    public void retry(VolleyError error) throws VolleyError {
+
+                    }
+                });
+                requestQueue.add(stringRequest);
+                progressDialog = new ProgressDialog(FamilyRegistration.this);
+                progressDialog.setMessage("Adding. Please wait..");
+                progressDialog.show();
+
+                /*if (isFormValid())
                 {
                     Toast.makeText(FamilyRegistration.this, "Added Successfully", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -191,7 +272,6 @@ public class FamilyRegistration extends AppCompatActivity {
             valid=false;
             earningMembers.setError("Please check");
         }
-        
         return valid;
     }
 }

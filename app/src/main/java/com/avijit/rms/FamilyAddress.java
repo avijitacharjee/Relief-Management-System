@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.avijit.rms.location.AppLocationService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +61,9 @@ public class FamilyAddress extends AppCompatActivity {
     private List<String> divisionsIdList =new ArrayList<>();
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,12 @@ public class FamilyAddress extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, areas);
         areaEditText.setThreshold(2);
         areaEditText.setAdapter(areaAdapter);*/
+       areaEditText.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Toast.makeText(FamilyAddress.this, ""+(new AppLocationService(getApplicationContext()).getLocation(LocationManager.GPS_PROVIDER).toString()), Toast.LENGTH_SHORT).show();
+           }
+       });
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,divisions);

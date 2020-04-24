@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Details of relief"
+        android:textColor="@color/black"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/family_members_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Family members: 4"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/date_revieved_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Received: 4th April 2020"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/from_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="From: Bidyanondo"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/rice_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="    ~Rice(Kg)"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/eggs_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="    ~Eggs(24pcs)"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/soap_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="    ~Soap(2)"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+</LinearLayout>

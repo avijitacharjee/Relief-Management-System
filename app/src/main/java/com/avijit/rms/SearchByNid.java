@@ -85,11 +85,7 @@ public class SearchByNid extends AppCompatActivity {
         //-1 means heading row
         for(int i=-1;i<rows;i++)
         {
-            if(i==-1)
-            {
-                row=null;
-            }
-            else
+            if(i>=0)
             {
                 row = reliefs.get(i);
                 textSpacer = new TextView(this);
@@ -151,7 +147,7 @@ public class SearchByNid extends AppCompatActivity {
                 tr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(SearchByNid.this, finalRow.getName().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchByNid.this, finalRow.getName(), Toast.LENGTH_SHORT).show();
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(SearchByNid.this);
 

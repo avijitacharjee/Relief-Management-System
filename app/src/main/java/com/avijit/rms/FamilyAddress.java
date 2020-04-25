@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -69,12 +70,18 @@ public class FamilyAddress extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_address);
 
+
+
         divisionSpinner= findViewById(R.id.division_spinner);
         districtSpinner = findViewById(R.id.district_spinner);
         typeSpinner = findViewById(R.id.type_spinner);
         areaEditText = findViewById(R.id.area_edit_text);
 
         nextButton = findViewById(R.id.next_button);
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("RMS");
 
 
        /* String areas[] = {"Brammanbaria","Noakhali","Barishal"};
@@ -173,6 +180,11 @@ public class FamilyAddress extends AppCompatActivity {
                }
             }
         });
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        super.onBackPressed();
+        return true;
     }
     private boolean formValidationPassed()
     {

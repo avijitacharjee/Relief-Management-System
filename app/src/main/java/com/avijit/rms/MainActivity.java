@@ -63,6 +63,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MainActivity.super.onBackPressed();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setMessage("Are you sure to exit?");
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
@@ -112,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }
-
-
                 break;
         }
     }

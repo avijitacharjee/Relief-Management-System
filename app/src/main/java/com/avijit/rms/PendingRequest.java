@@ -1,13 +1,28 @@
 package com.avijit.rms;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.avijit.rms.viewmodels.ReliefVM;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -16,14 +31,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class PendingRequest extends AppCompatActivity {
+import java.util.List;
+
+public class PendingRequest extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private AppBarConfiguration mAppBarConfiguration;
+    TableLayout tableLayout;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_request);
+
+        tableLayout = findViewById(R.id.table_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -34,18 +55,40 @@ public class PendingRequest extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+        mAppBarConfiguration = new AppBarConfiguration.Builder()
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (drawer.isDrawerOpen(Gravity.RIGHT)) {
+                    drawer.closeDrawer(Gravity.RIGHT);
+                } else {
+                    drawer.openDrawer(Gravity.RIGHT);
+                }
+            }
+        });
+        loadData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -55,10 +98,113 @@ public class PendingRequest extends AppCompatActivity {
         return true;
     }
 
+
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        switch (id)
+        {
+            case R.id.logout: logout();
+                                break;
+        }
+        return true;
+    }
+    public void logout()
+    {
+        getSharedPreferences("RMS",MODE_PRIVATE).edit().putString("token","").apply();
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+    }
+    public void loadData()
+    {
+        int leftRowMargin =0;
+        int topRowMargin =0;
+        int rightRowMargin =0;
+        int bottomRowMargin =0;
+        int textSize =0, smallTextSize =0 , mediumTextSize =0;
+        textSize =(int) getResources().getDimension(R.dimen.font_size);
+        smallTextSize =(int) getResources().getDimension(R.dimen.font_size_small);
+        mediumTextSize = (int) getResources().getDimension(R.dimen.font_size_medium);
+
+        ReliefVM row = null;
+        final List<ReliefVM> reliefs = ReliefVM.getReliefs();
+        int rows = reliefs.size();
+        TextView textSpacer = null;
+        tableLayout.removeAllViews();
+        //-1 means heading row
+        for(int i=-1;i<rows;i++)
+        {
+            if(i==-1)
+            {
+                row=null;
+            }
+            else
+            {
+                row = reliefs.get(i);
+                textSpacer = new TextView(this);
+                textSpacer.setText("");
+            }
+            //data columns
+            final TextView tv = new TextView(this);
+            tv.setLayoutParams(new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
+            tv.setGravity(Gravity.LEFT);
+            tv.setPadding(5,15,0,15);
+            if(i==-1)
+            {
+                tv.setText("Inv.#");
+            }
+            else
+            {
+                tv.setText(row.getId());
+            }
+            final TextView tv2 = new TextView(this);
+            if(i==-1)
+            {
+                tv2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT));
+                tv2.setText("Name");
+            }
+            else
+            {
+                tv2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.MATCH_PARENT));
+                tv2.setText(row.getName());
+            }
+            tv2.setGravity(Gravity.LEFT);
+            final TextView tv3 = new TextView(this);
+            if (i == -1) {
+                tv3.setLayoutParams(new
+                        TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT));
+                tv3.setPadding(5, 5, 0, 5);
+                tv3.setTextSize(TypedValue.COMPLEX_UNIT_PX, smallTextSize);
+                tv3.setText("Contact");
+            }
+            else {
+                tv3.setLayoutParams(new
+                        TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT));
+                tv3.setPadding(5, 0, 0, 5);
+                tv3.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+                tv3.setText(row.getContact());
+            }
+            tv3.setGravity(Gravity.TOP);
+            final TableRow tr = new TableRow(this);
+            tr.setBackground(getResources().getDrawable(R.drawable.border3));
+            tr.addView(tv);
+            tr.addView(tv2);
+            tr.addView(tv3);
+            tableLayout.addView(tr);
+            final ReliefVM finalRow= row;
+            if(i>-1)
+            {
+                tr.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
+
+        }
+
     }
 }

@@ -1,13 +1,22 @@
 package com.avijit.rms;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,25 +28,69 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avijit.rms.viewmodels.ReliefVM;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-public class SearchRecentRecords extends AppCompatActivity {
+public class SearchRecentRecords extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     TableLayout tableLayout;
     Spinner divisionSpinner,districtSpinner;
 
     String[] divisions = {"--Select division--"};
     String[] districts = {"--Select district--"};
+    AppBarConfiguration mAppBarConfiguration;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_recent_records);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Search Recent Records");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        drawer = findViewById(R.id.drawer_layout);
+
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        mAppBarConfiguration = new AppBarConfiguration.Builder()
+                .setDrawerLayout(drawer)
+                .build();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (drawer.isDrawerOpen(Gravity.RIGHT)) {
+                    drawer.closeDrawer(Gravity.RIGHT);
+                } else {
+                    drawer.openDrawer(Gravity.RIGHT);
+                }
+            }
+        });
+
+
+
+
         tableLayout = findViewById(R.id.table_layout);
         divisionSpinner = findViewById(R.id.division_spinner);
         districtSpinner = findViewById(R.id.district_spinner);
+        toolbar = findViewById(R.id.toolbar);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,divisions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -46,13 +99,7 @@ public class SearchRecentRecords extends AppCompatActivity {
         divisionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(FamilyAddress.this, divisionSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-                /*division=divisionSpinner.getSelectedItem().toString();
-                if(position>0)
-                {
-                    Toast.makeText(getApplicationContext(), divisionsIdList.get(position-1)+"", Toast.LENGTH_SHORT).show();
-                    setDistricts(divisionsIdList.get(position-1));
-                }*/
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -76,13 +123,24 @@ public class SearchRecentRecords extends AppCompatActivity {
             }
         });
 
+
         loadData();
+
 
     }
     public boolean onOptionsItemSelected(MenuItem item){
         super.onBackPressed();
+        Toast.makeText(this, ""+item, Toast.LENGTH_SHORT).show();
         return true;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.pending_request, menu);
+        return true;
+    }
+
+
 
     public void loadData()
     {
@@ -192,5 +250,12 @@ public class SearchRecentRecords extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        Toast.makeText(this, ""+menuItem, Toast.LENGTH_SHORT).show();
+        return true;
     }
 }

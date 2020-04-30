@@ -15,12 +15,14 @@ import android.widget.Button;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 
 public class MainActivity extends AppCompatActivity {
     Button wantToDonateButton,needHelpButton;
     private static final int PERMISSION_REQUEST_CODE = 200;
+    int k;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         wantToDonateButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                startActivity(new Intent(getApplicationContext(),SearchByNid.class));
+                //startActivity(new Intent(getApplicationContext(),SearchByNid.class));
                 return false;
             }
         });
@@ -52,18 +54,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (!checkPermission()) {
-
-            requestPermission();
-
-        } else {
-
-
-        }
+        requestPermission();
 
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -71,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                MainActivity.super.onBackPressed();
+                finishAffinity();
+                //System.exit(0);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -89,14 +83,13 @@ public class MainActivity extends AppCompatActivity {
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA);
+        int result2 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_COARSE_LOCATION);
 
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+        return (result == PackageManager.PERMISSION_GRANTED) && (result1 == PackageManager.PERMISSION_GRANTED) && (result2==PackageManager.PERMISSION_GRANTED );
     }
 
     private void requestPermission() {
-
-        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, CAMERA}, PERMISSION_REQUEST_CODE);
-
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION, CAMERA}, PERMISSION_REQUEST_CODE);
     }
 
     @Override
@@ -105,10 +98,11 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0) {
 
-                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean cameraAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean fineLocationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean coraseLocationAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean cameraAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED;
 
-                    if (locationAccepted && cameraAccepted)
+                    if (fineLocationAccepted && coraseLocationAccepted && cameraAccepted)
                     {
 
                     }
@@ -118,15 +112,15 @@ public class MainActivity extends AppCompatActivity {
                        // Snackbar.make(view, "Permission Denied, You cannot access location data and camera.", Snackbar.LENGTH_LONG).show();
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)
+                                || shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)
+                                    || shouldShowRequestPermissionRationale(CAMERA)
+                            ) {
                                 showMessageOKCancel("You need to allow access to both the permissions",
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{ACCESS_FINE_LOCATION, CAMERA},
-                                                            PERMISSION_REQUEST_CODE);
-                                                }
+                                                requestPermission();
                                             }
                                         });
                                 return;
@@ -144,7 +138,12 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(MainActivity.this)
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                    }
+                })
                 .create()
                 .show();
     }

@@ -2,11 +2,6 @@ package com.avijit.rms;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +39,14 @@ public class SearchByNid extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),SearchRecentRecords.class));
+
+            }
+        });
+        searchButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivity(new Intent(getApplicationContext(),PendingRequest.class));
+                return true;
             }
         });
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -58,6 +61,7 @@ public class SearchByNid extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Search Recent Records");
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
     }
     public int dpToPx(int dp) {
         float density = getResources()
@@ -147,7 +151,7 @@ public class SearchByNid extends AppCompatActivity {
                 tr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(SearchByNid.this, finalRow.getName(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SearchByNid.this, finalRow.getName(), Toast.LENGTH_SHORT).show();
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(SearchByNid.this);
 
@@ -158,20 +162,14 @@ public class SearchByNid extends AppCompatActivity {
                             }
                         });
 
-
                         View v1 = getLayoutInflater().inflate(R.layout.relief_details_fragment_dialog, null, false);
-
                         builder.setView(v1);
                         builder.create();
                         AlertDialog alert = builder.create();
                         alert.show();
-
                     }
                 });
             }
-
         }
-
     }
-
 }

@@ -55,14 +55,13 @@ public class FamilyAddress extends AppCompatActivity {
     String division="";
     String district="";
     String type="";
+    public int divisionId;
+    int districtId;
 
 
    // Intent intent = new Intent(getApplicationContext(),FamilyAddress.class);
 
     private List<String> divisionsIdList =new ArrayList<>();
-
-
-
 
 
     @Override
@@ -92,7 +91,7 @@ public class FamilyAddress extends AppCompatActivity {
        areaEditText.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               Toast.makeText(FamilyAddress.this, ""+(new AppLocationService(getApplicationContext()).getLocation(LocationManager.GPS_PROVIDER).toString()), Toast.LENGTH_SHORT).show();
+              // Toast.makeText(FamilyAddress.this, ""+(new AppLocationService(getApplicationContext()).getLocation(LocationManager.GPS_PROVIDER).toString()), Toast.LENGTH_SHORT).show();
            }
        });
 
@@ -107,8 +106,10 @@ public class FamilyAddress extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(FamilyAddress.this, divisionSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 division=divisionSpinner.getSelectedItem().toString();
+
                 if(position>0)
                 {
+                    divisionId = Integer.parseInt(divisionsIdList.get(position-1));
                     Toast.makeText(getApplicationContext(), divisionsIdList.get(position-1)+"", Toast.LENGTH_SHORT).show();
                     setDistricts(divisionsIdList.get(position-1));
                 }
@@ -125,8 +126,12 @@ public class FamilyAddress extends AppCompatActivity {
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                district = districtSpinner.getSelectedItem().toString();
-                //setDistricts();
+                //district = districtSpinner.getSelectedItem().toString();
+                if(position>0)
+                {
+                    districtId = Integer.parseInt(divisionsIdList.get(position-1));
+                }
+
             }
 
             @Override
@@ -155,10 +160,11 @@ public class FamilyAddress extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                Intent familyRegistration = new Intent(getApplicationContext(),FamilyRegistration.class);
-               familyRegistration.putExtra("Division",division);
-               familyRegistration.putExtra("District",district);
+               familyRegistration.putExtra("Division",divisionId);
+               familyRegistration.putExtra("District",districtId);
                familyRegistration.putExtra("Type",type);
-               if(formValidationPassed())
+               familyRegistration.putExtra("area","1");
+               if(formValidationPassed() || true)
                {
                    startActivity(familyRegistration);
                }
@@ -210,7 +216,7 @@ public class FamilyAddress extends AppCompatActivity {
     public void setDivisions()
     {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url ="http://aniksen.me/covidbd/api/divisions";
+        String url ="https://aniksen.me/covidbd/api/divisions";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -234,7 +240,6 @@ public class FamilyAddress extends AppCompatActivity {
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             divisionSpinner.setAdapter(adapter);
 
-
                         }catch (JSONException e)
                         {
                             Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
@@ -246,7 +251,7 @@ public class FamilyAddress extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 /*textView.setText("Failed"+error.toString());*/
-                Toast.makeText(getApplicationContext(),"Net connection failed",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
         }){
@@ -278,7 +283,7 @@ public class FamilyAddress extends AppCompatActivity {
     public void setDistricts(String divisionId)
     {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url ="http://aniksen.me/covidbd/api/districts/"+divisionId;
+        String url ="https://aniksen.me/covidbd/api/districts/"+divisionId;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

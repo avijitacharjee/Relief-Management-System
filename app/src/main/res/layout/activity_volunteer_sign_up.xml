@@ -1,148 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="80dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    tools:context="com.avijit.rms.VolunteerSignUp"
-    android:background="@drawable/bg_2">
+    tools:context=".VolunteerLogIn"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:padding="20dp">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/logo_main"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:id="@+id/logo_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:transitionName="tran1"
         android:visibility="gone"
-        android:id="@+id/imgvw" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="420dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        >
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:textColor="#fff"
-            android:background="@drawable/border"
-            android:padding="15dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginRight="10dp"
-            android:textStyle="bold"
-            />
-        <Button
-            android:id="@+id/signup_intent_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SignUp"
-            android:textColor="#fff"
-            android:background="@drawable/border"
-            android:padding="15dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:textStyle="bold"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:layout_marginTop="240dp"
-        android:id="@+id/lnrlyout">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#30000000"
-            android:orientation="vertical"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#20000000"
-                android:padding="16dp">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/user"
-                    android:layout_gravity="center"/>
-                <EditText
-                    android:id="@+id/user_name_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Username"
-                    android:textColorHint="#fff"
-                    android:layout_marginLeft="15dp"
-                    android:background="#00000000"
-                    android:letterSpacing="0.1"
-                    android:textSize="16dp"
-                    android:textColor="#fff"
-                    android:inputType="text"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#5fff"></LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#20000000"
-                android:orientation="horizontal"
-                android:padding="16dp">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/password"
-                    android:layout_gravity="center"/>
-                <EditText
-                    android:id="@+id/password_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:textColorHint="#fff"
-                    android:layout_marginLeft="15dp"
-                    android:background="#00000000"
-                    android:inputType="textPassword"
-                    android:letterSpacing="0.1"
-                    android:textSize="16dp"
-                    android:textColor="#fff"
-                    />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#5fff"></LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
+        />
 
     <TextView
-        android:id="@+id/bytes"
+        android:id="@+id/logo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
+        android:text="Hello there, Welcome Back"
+        android:textColor="#000"
+        android:textSize="34sp"
+        android:transitionName="logo_text" />
+    <TextView
+        android:id="@+id/slogan_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In to continue"
+        android:visibility="gone"
+        android:textSize="18sp"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/lnrlyout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imgvw"
-        android:layout_marginBottom="70dp"
-        android:gravity="top|center"
-        android:text="Volunteer SignUp"
-        android:textColor="#FFEB3B"
-        android:textSize="36dp"
-        android:textStyle="bold" />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            app:boxStrokeColor="@color/black"
+            android:hint="Full Name"
+            android:transitionName="tran2"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_name_edit_text"
+                android:layout_width="match_parent"
+                android:hint="Full Name"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/email"
+            app:boxStrokeColor="@color/black"
+            android:hint="Email"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email_edit_text"
+                android:layout_width="match_parent"
+                android:hint="email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone_no"
+            app:boxStrokeColor="@color/black"
+            android:hint="Phone no"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone_edit_text"
+                android:layout_width="match_parent"
+                android:hint="Phone no"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="phone"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/password"
+            app:boxStrokeColor="@color/black"
+            android:hint="Password"
+            android:transitionName="tran3"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/black"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="password"
+
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="5dp"
+        android:background="#00000000"
+            android:visibility="gone"
+        android:elevation="0dp"
+        android:text="Forgot Password?" />
+
+        <Button
+            android:id="@+id/go"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GO"
+            android:transitionName="tran4"
+            android:background="#000000"
+            android:textColor="#fff"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <Button
+            android:id="@+id/signup_intent_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="5dp"
+            android:background="#00000000"
+            android:elevation="0dp"
+            android:transitionName="tran0"
+            android:text="Already Have an account? Sign IN"
+            android:textColor="#000"/>
+
+    </LinearLayout>
+</LinearLayout>

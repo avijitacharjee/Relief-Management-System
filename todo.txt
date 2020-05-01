@@ -3,6 +3,6 @@
 3.pending_request_activity(done)
 4.Material design
 5.UI design perfect
-6.add_schedule_activity
+6.add_schedule_activity(done)
 8.add_request_activity
 9.navigation drawer to right.(done)

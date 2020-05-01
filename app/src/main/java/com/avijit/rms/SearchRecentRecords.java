@@ -255,7 +255,22 @@ public class SearchRecentRecords extends AppCompatActivity implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        Toast.makeText(this, ""+menuItem, Toast.LENGTH_SHORT).show();
+        switch(menuItem.getItemId())
+        {
+            case R.id.nav_add_donate_schedule:
+            {
+                Intent intent = new Intent(getApplicationContext(),AddDonateSchedule.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.logout:
+            {
+                getSharedPreferences("RMS",MODE_PRIVATE).edit().putString("token","").apply();
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                break;
+            }
+        }
+
         return true;
     }
 }

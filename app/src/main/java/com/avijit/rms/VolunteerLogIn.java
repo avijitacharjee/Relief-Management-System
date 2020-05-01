@@ -3,6 +3,7 @@ package com.avijit.rms;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +13,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONObject;
 
@@ -36,16 +41,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VolunteerLogIn extends AppCompatActivity {
-    Button logInButton,signUpIntentButton;
-    String token = "";
+    private Button logInButton,signUpIntentButton;
+    private EditText userNameEditText,passwordEditText;
+    ImageView logoImage;
+    TextInputLayout tran2,tran3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_volunteer_log_in);
+        setContentView(R.layout.content_volunteer_login_2);
 
         logInButton = findViewById(R.id.login_button);
         signUpIntentButton = findViewById(R.id.signup_intent_button);
+        logoImage = findViewById(R.id.logo_image);
+        userNameEditText = findViewById(R.id.user_name_edit_text);
+        passwordEditText = findViewById(R.id.password_edit_text);
+        tran2 = findViewById(R.id.username);
+        tran3 = findViewById(R.id.password);
+
+
         SharedPreferences sharedPref= getSharedPreferences("RMS",MODE_PRIVATE);
         if(!sharedPref.getString("token","").equals(""))
         {
@@ -65,8 +79,21 @@ public class VolunteerLogIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),VolunteerSignUp.class);
+                Pair[] pairs = new Pair[5];
+                pairs[0]= new Pair<View,String>(signUpIntentButton,"tran0");
+                pairs[1]= new Pair<View,String>(logoImage,"tran1");
+                pairs[2]= new Pair<View,String>(tran2,"tran2");
+                pairs[3]= new Pair<View,String>(tran3,"tran3");
+                pairs[4]= new Pair<View,String>(logInButton,"tran4");
+                ActivityOptions options = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    options = ActivityOptions.makeSceneTransitionAnimation(VolunteerLogIn.this,pairs);
+                }
+                startActivity(intent,options.toBundle());
             }
         });
+
+
 
 
 
@@ -110,8 +137,8 @@ public class VolunteerLogIn extends AppCompatActivity {
                 params.put("grant_type","password");
                 params.put("client_id","2");
                 params.put("client_secret","ick8KJoYgvd4blo3NWbAk9KeWMEOx5XOlQr6ryY5");
-                params.put("username","avijitach@gmail.com");
-                params.put("password","password");
+                params.put("username",userNameEditText.getText().toString());
+                params.put("password",passwordEditText.getText().toString());
                 return params;
             }
 

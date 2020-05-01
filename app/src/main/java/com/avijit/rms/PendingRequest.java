@@ -78,6 +78,8 @@ public class PendingRequest extends AppCompatActivity implements NavigationView.
                 }
             }
         });
+        Menu menu = navigationView.getMenu();
+        menu.getItem(R.id.logout).setVisible(true);
         loadData();
     }
 

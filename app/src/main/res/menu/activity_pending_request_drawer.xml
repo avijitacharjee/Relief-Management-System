@@ -10,7 +10,7 @@
             android:icon="@drawable/ic_menu_share"
             android:title="Home"/>
         <item
-            android:id="@+id/nav_cert_program"
+            android:id="@+id/nav_add_donate_schedule"
             android:icon="@drawable/ic_menu_share"
             android:title="Add a schedule"/>
         <item

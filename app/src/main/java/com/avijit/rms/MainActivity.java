@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,7 +21,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 
 public class MainActivity extends AppCompatActivity {
-    Button wantToDonateButton,needHelpButton;
+    TextView wantToDonateButton,needHelpButton;
     private static final int PERMISSION_REQUEST_CODE = 200;
     int k;
 

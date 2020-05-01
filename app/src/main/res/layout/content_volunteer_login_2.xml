@@ -7,6 +7,7 @@
         tools:context=".VolunteerLogIn"
         android:orientation="vertical"
         android:background="#fff"
+        android:gravity="center"
         android:padding="20dp">
 
         <ImageView
@@ -24,7 +25,7 @@
         android:fontFamily="@font/bungee"
         android:text="Hello there, Welcome Back"
         android:textColor="#000"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:transitionName="kj" />
         <TextView
             android:id="@+id/slogan_name"

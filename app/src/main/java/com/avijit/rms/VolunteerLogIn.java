@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -51,6 +52,7 @@ public class VolunteerLogIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_volunteer_login_2);
 
+
         logInButton = findViewById(R.id.login_button);
         signUpIntentButton = findViewById(R.id.signup_intent_button);
         logoImage = findViewById(R.id.logo_image);
@@ -80,8 +82,8 @@ public class VolunteerLogIn extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),VolunteerSignUp.class);
                 Pair[] pairs = new Pair[5];
-                pairs[0]= new Pair<View,String>(signUpIntentButton,"tran0");
-                pairs[1]= new Pair<View,String>(logoImage,"tran1");
+                pairs[1]= new Pair<View,String>(signUpIntentButton,"tran0");
+                pairs[0]= new Pair<View,String>(logoImage,"tran1");
                 pairs[2]= new Pair<View,String>(tran2,"tran2");
                 pairs[3]= new Pair<View,String>(tran3,"tran3");
                 pairs[4]= new Pair<View,String>(logInButton,"tran4");
@@ -115,11 +117,12 @@ public class VolunteerLogIn extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("token",token);
                             editor.commit();
+                            startActivity(new Intent(VolunteerLogIn.this,SearchByNid.class));
                         }catch (Exception e)
                         {
                             Toast.makeText(VolunteerLogIn.this, "Invalid username/password", Toast.LENGTH_SHORT).show();
                         }
-                       /*  */
+
                     }
 
                 },
@@ -156,4 +159,8 @@ public class VolunteerLogIn extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(VolunteerLogIn.this,MainActivity.class));
+    }
 }

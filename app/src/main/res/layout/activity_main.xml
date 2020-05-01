@@ -6,30 +6,25 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".MainActivity">
 
-    <Button
+
+    <com.google.android.material.textview.MaterialTextView
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:paddingLeft="35dp"
         android:paddingRight="35dp"
         android:id="@+id/want_to_donate_button"
-        android:layout_marginTop="150dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black"
         android:text="Want to donate"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/need_help_button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48000002" />
+        android:layout_gravity="center" />
 
-    <Button
+    <com.google.android.material.textview.MaterialTextView
         android:layout_margin="20dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
@@ -39,16 +34,9 @@
         android:id="@+id/need_help_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:background="@color/black"
         android:text="Need Help"
         android:textColor="@color/white"
-        android:textSize="30sp"
-        android:layout_marginBottom="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/want_to_donate_button"
-        app:layout_constraintVertical_bias="0.49" />
+        android:textSize="30sp" />
 
 </LinearLayout>

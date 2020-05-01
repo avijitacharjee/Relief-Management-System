@@ -96,14 +96,17 @@ public class FamilyAddress extends AppCompatActivity {
        });
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,divisions);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout,divisions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         divisionSpinner.setAdapter(adapter);
         setDivisions();
 
+
         divisionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+                ((TextView) parent.getChildAt(0)).setBackgroundColor(Color.WHITE);
                 //Toast.makeText(FamilyAddress.this, divisionSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 division=divisionSpinner.getSelectedItem().toString();
 
@@ -126,6 +129,8 @@ public class FamilyAddress extends AppCompatActivity {
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+                ((TextView) parent.getChildAt(0)).setBackgroundColor(Color.WHITE);
                 //district = districtSpinner.getSelectedItem().toString();
                 if(position>0)
                 {
@@ -146,6 +151,8 @@ public class FamilyAddress extends AppCompatActivity {
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+                ((TextView) parent.getChildAt(0)).setBackgroundColor(Color.WHITE);
                 type = typeSpinner.getSelectedItem().toString();
             }
 
@@ -187,6 +194,7 @@ public class FamilyAddress extends AppCompatActivity {
             }
         });
     }
+
 
     public boolean onOptionsItemSelected(MenuItem item){
         super.onBackPressed();

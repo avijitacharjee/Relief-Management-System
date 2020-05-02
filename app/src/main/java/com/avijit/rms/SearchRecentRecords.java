@@ -84,9 +84,6 @@ public class SearchRecentRecords extends AppCompatActivity implements Navigation
             }
         });
 
-
-
-
         tableLayout = findViewById(R.id.table_layout);
         divisionSpinner = findViewById(R.id.division_spinner);
         districtSpinner = findViewById(R.id.district_spinner);

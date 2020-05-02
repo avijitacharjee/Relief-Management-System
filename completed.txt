@@ -1,0 +1,12 @@
+1.Login (outh2),registration,logout
+2.Save login on device
+3.Search by nid Activity
+4.Search recent records with filters
+5.Pending requests activity
+6.Add relief request activity
+7.Relief details dialogue fragment
+8.Get device location
+9.Loading dialogue
+10.Exit time alert dialogue
+11.PermissionDialogue(for camera,location,etc. )
+12.Common navigatin drawer

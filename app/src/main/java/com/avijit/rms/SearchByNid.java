@@ -1,13 +1,28 @@
 package com.avijit.rms;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,21 +32,84 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.avijit.rms.adapters.SearchByNidRecyclerViewAdapter;
 import com.avijit.rms.viewmodels.ReliefVM;
+import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SearchByNid extends AppCompatActivity {
     TableLayout tableLayout;
     Button searchButton;
     EditText searchEditText;
-
+    Toolbar toolbar;
+    DrawerLayout drawer;
+    NavigationView navigation;
+    AppBarConfiguration appBarConfiguration;
+    ActionBarDrawerToggle toggle;
+    RecyclerView recyclerView;
+    SearchByNidRecyclerViewAdapter searchByNidRecyclerViewAdapter;
+    SearchView searchView;
+    List<String> names= new ArrayList<>();
+    List<String> nids= new ArrayList<>();
+    List<String> contacts= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_by_nid);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Search by Nid or contact No");
+        drawer = findViewById(R.id.drawer_layout);
+        navigation = findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+        appBarConfiguration = new AppBarConfiguration.Builder().setDrawerLayout(drawer).build();
+        toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(drawer.isDrawerOpen(Gravity.RIGHT))
+                {
+                    drawer.closeDrawer(Gravity.RIGHT);
+                }
+                else
+                {
+                    drawer.openDrawer(Gravity.RIGHT);
+                }
+            }
+        });
+        Menu menu = navigation.getMenu();
 
-        searchButton=findViewById(R.id.search_btn);
+        recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        fetchData("1");
+        searchByNidRecyclerViewAdapter = new SearchByNidRecyclerViewAdapter(names,nids,contacts);
+        recyclerView.setAdapter(searchByNidRecyclerViewAdapter);
+        /*searchButton=findViewById(R.id.search_btn);
         searchEditText = findViewById(R.id.search_edit_text);
 
 
@@ -61,8 +139,119 @@ public class SearchByNid extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Search Recent Records");
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();*/
     }
+    private void fetchData(String param)
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://aniksen.me/covidbd/api/relief/"+param;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+               // Toast.makeText(SearchByNid.this, response, Toast.LENGTH_SHORT).show();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray reliefs= jsonObject.getJSONArray("reliefs");
+                    String[] address = new String[reliefs.length()];
+                    List<String> s = new ArrayList<>();
+                    List<String> s1 = new ArrayList<>();
+                    List<String> s2 = new ArrayList<>();
+                    names.clear();contacts.clear();nids.clear();
+                    //names.add("Name");contacts.add("Contact");nids.add("NID");
+                    for(int i=0;i<reliefs.length();i++)
+                    {
+                        names.add(reliefs.getJSONObject(i).getString("given_to"));
+                        contacts.add(reliefs.getJSONObject(i).getString("contact_no"));
+                        nids.add(reliefs.getJSONObject(i).getString("nid"));
+                    }
+
+                    searchByNidRecyclerViewAdapter.notifyDataSetChanged();
+                }catch (Exception e)
+                {
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(SearchByNid.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Content-type","Application/json");
+                headers.put("Content-type","Application/x-www-form-urlencoded");
+                headers.put("Authorization","Bearer: "+getSharedPreferences("RMS",MODE_PRIVATE).getString("token",""));
+                return headers;
+            }
+        };
+        queue.add(stringRequest);
+    }
+    private void whiteNotificationBar(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+            getWindow().setStatusBarColor(Color.WHITE);
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.action_search)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        // listening to search query text change
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // filter recycler view when query submitted
+                //searchByNidRecyclerViewAdapter.getFilter().filter(query);
+                fetchData(query);
+                //searchByNidRecyclerViewAdapter.notifyDataSetChanged();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // filter recycler view when text is changed
+                //mAdapter.getFilter().filter(query);
+                fetchData(query);
+                //searchByNidRecyclerViewAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        if(!getSharedPreferences("RMS",MODE_PRIVATE).getString("token","").equals(""))
+        {
+            Intent intent = new Intent(SearchByNid.this,
+                    MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+
+    }
+
     public int dpToPx(int dp) {
         float density = getResources()
                 .getDisplayMetrics()

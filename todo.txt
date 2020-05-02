@@ -1,8 +1,12 @@
 1.Common navigation drawer(done)
 2.Add all alertdialog for all persmissions(done)
 3.pending_request_activity(done)
-4.Material design
-5.UI design perfect
+4.Material design(done)
+5.UI design perfect(done)
 6.add_schedule_activity(done)
 8.add_request_activity
 9.navigation drawer to right.(done)
+10.table design .
+11.splash screen with animation.
+12.Add donete schedule activity
+13.

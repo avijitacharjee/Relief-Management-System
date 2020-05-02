@@ -1,48 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bg_2"
-    tools:context=".SearchByNid">
-    <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <include
+        layout="@layout/app_bar_search_by_nid"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <EditText
-            android:id="@+id/search_edit_text"
-            android:background="#40000000"
-            android:hint="Search by nid or contact"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+        android:layout_height="match_parent"/>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        app:headerLayout="@layout/nav_header_pending_request"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="end"
+        app:menu="@menu/activity_pending_request_drawer"
+        android:layout_height="match_parent"/>
 
-            />
-        <Button
-            android:id="@+id/search_btn"
-            android:layout_width="50dp"
-            android:background="@color/white"
-            android:foreground="@drawable/ic_search_black_24dp"
-            android:layout_height="50dp"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TableLayout
-                android:id="@+id/table_layout"
-                android:outlineAmbientShadowColor="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </TableLayout>
-        </ScrollView>
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

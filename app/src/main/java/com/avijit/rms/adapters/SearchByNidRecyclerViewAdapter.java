@@ -39,6 +39,16 @@ public class SearchByNidRecyclerViewAdapter extends RecyclerView.Adapter<SearchB
         holder.nameTextView.setText(names.get(position));
         holder.contactTextView.setText(contacts.get(position));
         holder.nidTextView.setText(nids.get(position));
+        if(position%2==0)
+        {
+            holder.nameTextView.setBackgroundColor(Color.parseColor("#DFE6E9"));
+            holder.contactTextView.setBackgroundColor(Color.parseColor("#DFE6E9"));
+            holder.nidTextView.setBackgroundColor(Color.parseColor("#DFE6E9"));
+        }
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override

@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FamilyAddress extends AppCompatActivity {
-    Button nextButton;
+    TextView nextButton;
 
     Spinner divisionSpinner,districtSpinner,typeSpinner;
     EditText areaEditText;

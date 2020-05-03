@@ -73,7 +73,7 @@ public class SearchByNid extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Search by Nid or contact No");
+        getSupportActionBar().setTitle("Search by Nid/contact No");
         drawer = findViewById(R.id.drawer_layout);
         navigation = findViewById(R.id.nav_view);
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

@@ -139,7 +139,7 @@ public class VolunteerLogIn extends AppCompatActivity {
                 Map<String,String> params = new HashMap<>();
                 params.put("grant_type","password");
                 params.put("client_id","2");
-                params.put("client_secret","ick8KJoYgvd4blo3NWbAk9KeWMEOx5XOlQr6ryY5");
+                params.put("client_secret","Xhqe0rptK0qCmRjuXbw2PADML5fjaE3RJOBhTMHn");
                 params.put("username",userNameEditText.getText().toString());
                 params.put("password",passwordEditText.getText().toString());
                 return params;

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -55,6 +56,7 @@ public class FamilyRegistration extends AppCompatActivity {
         setContentView(R.layout.activity_family_registration);
         /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("RMS"); */
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         chooseImageButton = findViewById(R.id.img);
         imageView=findViewById(R.id.imageinsert);
@@ -72,8 +74,8 @@ public class FamilyRegistration extends AppCompatActivity {
                 //final String name = fullName.getText().toString();
 
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                String url = "http://aniksen.me/covidbd/api/relief/store";
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                String url = "https://aniksen.me/covidbd/api/relief/store";
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -96,22 +98,25 @@ public class FamilyRegistration extends AppCompatActivity {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         byte[] imageBytes = baos.toByteArray();
                         final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                        final String imageString1 = Base64.encodeToString(imageBytes, Base64.CRLF);
 
                         Map<String,String> params = new HashMap<>();
-                      /*  params.put("division_id","7");
+                        params.put("division_id","7");
                         params.put("district_id","24");
                         params.put("area_id","2");
                         params.put("address","andarkilla");
                         params.put("nid","12345678901234");
                         params.put("members_in_family","5");
-                        params.put("earnings_member","2");
+                        params.put("earning_members","2");
+                      //  params.put("Earnings_member","2");
                         params.put("lat","1.344347");
                         params.put("long","1234");
                         params.put("image",imageString);
+                        System.out.println(imageString);
                         params.put("contact_no","12345678921");
                         params.put("date_given","1978-04-25");
                         params.put("given_by","1");
-                        params.put("given_to","1");*/
+                        params.put("given_to","1");
                         return params;
                     }
 
@@ -120,12 +125,12 @@ public class FamilyRegistration extends AppCompatActivity {
                         HashMap headers = new HashMap();
                         headers.put("Content-Type", "application/json");
                         headers.put("Content-Type", "application/x-www-form-urlencoded");
-                     //   headers.put("Authorization","Bearer: "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiY2M5MDgzMmYxM2VmNDhkODBmOTM3MDYxMjU4ZjVlODMwODg5ZDE0OWRhZDMwZGZkMzVmN2JmYjZjNTNhNTI4NDExMzhmMmNjM2ExNTk4MjQiLCJpYXQiOjE1ODgxNTQwOTMsIm5iZiI6MTU4ODE1NDA5MywiZXhwIjoxNjE5NjkwMDkzLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.U1dixRGgiyVopgyBdBRtqS5W6xZXXJMTm5pTDoPCeLKc70p3-zifScXo0AqeSKXYgEOnZPl8sp9nUtRILPuDn3ftDQ3vAsnHqgjhhztDb8LAYtIWLC-pcd48gCCBkLrqfr21oieuZ29-pYrSTwPmM1riMNf_Yy3pooGgLDUddWPJpew5srA_vK_3rlKvGMFg5mMUASVEJIsle6kz2yI71iv8yrQZvLwmKJ6rgVLg_8Rv80Mkyyzht0ZZecFrvISyI8Qpv2fpZE79L8tOWYn2EuORHFdlFTsB4B5PPzPiYVkHhaAnmyFWJQC06PsQOBTIOSisjUcXY9BBby3jFFUmbA-aFg78YEzmw9lvLIb_eQyjGr4DsGzdFsZv3d-FMrtYONSQf5FNoMCh3c-3eIrBVlUhTcHj9qB-7O2wtDe2web9Xoi6rwfO8cZdfdOqr_8T6kpVgz-YepsweeglOcKQtM_QTmP6yVYyajIWO9XnfFWj_xxoxxkWnCpO-wCZihAm_LbijXRLZVxVQp6AqhIWk-ozCeC0ccj4yb2w4xcXCWp1EGc7G2i-Z-u49nNz73nIoF3JIF_qdNzekzJH7MG_9EXuefld_PiSlyZ_8kolOR6Fg-viFhzL5JNFj2LzPI58VuIRGWCYloVkkT_iZDuR13PNcYNPzEOB16cAi3MGQ08");
+                        headers.put("Authorization","Bearer: "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiY2M5MDgzMmYxM2VmNDhkODBmOTM3MDYxMjU4ZjVlODMwODg5ZDE0OWRhZDMwZGZkMzVmN2JmYjZjNTNhNTI4NDExMzhmMmNjM2ExNTk4MjQiLCJpYXQiOjE1ODgxNTQwOTMsIm5iZiI6MTU4ODE1NDA5MywiZXhwIjoxNjE5NjkwMDkzLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.U1dixRGgiyVopgyBdBRtqS5W6xZXXJMTm5pTDoPCeLKc70p3-zifScXo0AqeSKXYgEOnZPl8sp9nUtRILPuDn3ftDQ3vAsnHqgjhhztDb8LAYtIWLC-pcd48gCCBkLrqfr21oieuZ29-pYrSTwPmM1riMNf_Yy3pooGgLDUddWPJpew5srA_vK_3rlKvGMFg5mMUASVEJIsle6kz2yI71iv8yrQZvLwmKJ6rgVLg_8Rv80Mkyyzht0ZZecFrvISyI8Qpv2fpZE79L8tOWYn2EuORHFdlFTsB4B5PPzPiYVkHhaAnmyFWJQC06PsQOBTIOSisjUcXY9BBby3jFFUmbA-aFg78YEzmw9lvLIb_eQyjGr4DsGzdFsZv3d-FMrtYONSQf5FNoMCh3c-3eIrBVlUhTcHj9qB-7O2wtDe2web9Xoi6rwfO8cZdfdOqr_8T6kpVgz-YepsweeglOcKQtM_QTmP6yVYyajIWO9XnfFWj_xxoxxkWnCpO-wCZihAm_LbijXRLZVxVQp6AqhIWk-ozCeC0ccj4yb2w4xcXCWp1EGc7G2i-Z-u49nNz73nIoF3JIF_qdNzekzJH7MG_9EXuefld_PiSlyZ_8kolOR6Fg-viFhzL5JNFj2LzPI58VuIRGWCYloVkkT_iZDuR13PNcYNPzEOB16cAi3MGQ08");
                         return headers;
                     }
                 };
 
-                /*stringRequest.setRetryPolicy(new RetryPolicy() {
+                stringRequest.setRetryPolicy(new RetryPolicy() {
                     @Override
                     public int getCurrentTimeout() {
                         return 50000;
@@ -140,7 +145,7 @@ public class FamilyRegistration extends AppCompatActivity {
                     public void retry(VolleyError error) throws VolleyError {
 
                     }
-                });*/
+                });
                 requestQueue.add(stringRequest);
                 progressDialog = new ProgressDialog(FamilyRegistration.this);
                 progressDialog.setMessage("Adding. Please wait..");

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FamilyAddress"
-
     android:gravity="center"
     android:orientation="vertical"
     android:background="@color/anik1">
@@ -50,6 +49,19 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/anik2"
+        android:elevation="10dp"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/area_spinner"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.avijit.rms.utils.AppUtils;
 import com.google.android.material.snackbar.Snackbar;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -54,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        AppUtils appUtils = new AppUtils();
 
         requestPermission();
 
     }
+
 
     @Override
     public void onBackPressed() {

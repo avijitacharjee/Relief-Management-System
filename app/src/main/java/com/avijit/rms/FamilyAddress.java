@@ -43,13 +43,14 @@ import java.util.Map;
 public class FamilyAddress extends AppCompatActivity {
     TextView nextButton;
 
-    Spinner divisionSpinner,districtSpinner,typeSpinner;
+    Spinner divisionSpinner,districtSpinner,typeSpinner,areaSpinner;
     EditText areaEditText;
 
     ProgressBar progressBar;
     ProgressDialog progressDialog;
-    String[] divisions = {"--Select division--"};
+    String[] divisions =  {"--Select division--"};
     String[] districts = {"--Select district--"};
+    String[] areas = {"--Select area--"};
     String[] types = {"--Select type--", "A","B" };
 
     String division="";
@@ -68,12 +69,13 @@ public class FamilyAddress extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_address);
-
+        //TODO locations background task
 
 
         divisionSpinner= findViewById(R.id.division_spinner);
         districtSpinner = findViewById(R.id.district_spinner);
         typeSpinner = findViewById(R.id.type_spinner);
+        areaSpinner = findViewById(R.id.area_spinner);
         areaEditText = findViewById(R.id.area_edit_text);
 
         nextButton = findViewById(R.id.next_button);
@@ -109,7 +111,6 @@ public class FamilyAddress extends AppCompatActivity {
                 ((TextView) parent.getChildAt(0)).setBackgroundColor(Color.WHITE);
                 //Toast.makeText(FamilyAddress.this, divisionSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 division=divisionSpinner.getSelectedItem().toString();
-
                 if(position>0)
                 {
                     divisionId = Integer.parseInt(divisionsIdList.get(position-1));
@@ -135,6 +136,7 @@ public class FamilyAddress extends AppCompatActivity {
                 if(position>0)
                 {
                     districtId = Integer.parseInt(divisionsIdList.get(position-1));
+                    setTypes(districtId);
                 }
 
             }
@@ -194,7 +196,34 @@ public class FamilyAddress extends AppCompatActivity {
             }
         });
     }
+    public void setTypes(int id)
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://aniksen.me/covidbd/api/areas/"+id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("areas");
+                    areas = new String[jsonArray.length()];
+                    //TODO area response implementaion
+                }catch (Exception e){
 
+                }
+
+            }
+        }, commonErrorListener);
+        requestQueue.add(stringRequest);
+    }
+    Response.ErrorListener commonErrorListener =new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            /*textView.setText("Failed"+error.toString());*/
+            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        }
+    };
 
     public boolean onOptionsItemSelected(MenuItem item){
         super.onBackPressed();
@@ -282,7 +311,6 @@ public class FamilyAddress extends AppCompatActivity {
                 return headers;
             }
         };
-
         queue.add(stringRequest);
         progressDialog = new ProgressDialog(FamilyAddress.this);
         progressDialog.setMessage("Loading....");

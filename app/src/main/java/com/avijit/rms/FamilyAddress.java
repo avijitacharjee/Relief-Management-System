@@ -88,12 +88,7 @@ public class FamilyAddress extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, areas);
         areaEditText.setThreshold(2);
         areaEditText.setAdapter(areaAdapter);*/
-       areaEditText.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-              // Toast.makeText(FamilyAddress.this, ""+(new AppLocationService(getApplicationContext()).getLocation(LocationManager.GPS_PROVIDER).toString()), Toast.LENGTH_SHORT).show();
-           }
-       });
+
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,divisions);
@@ -116,7 +111,7 @@ public class FamilyAddress extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //this.onNothingSelected(parent);
             }
         });
 

@@ -1,24 +1,35 @@
 package com.avijit.rms;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,19 +40,23 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.avijit.rms.location.AppLocationService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FamilyRegistration extends AppCompatActivity {
-    Button chooseImageButton,addButton;
+    TextView chooseImageButton,addButton,addAndNextButton,addressTextView;
     EditText fullName,nid, contactNo, members, earningMembers;
 
     ImageView imageView;
@@ -50,6 +65,9 @@ public class FamilyRegistration extends AppCompatActivity {
     int PICK_IMAGE_REQUEST=111;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     ProgressDialog progressDialog;
+    private double latitude =0;
+    private double longitude=0;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +80,18 @@ public class FamilyRegistration extends AppCompatActivity {
         imageView=findViewById(R.id.imageinsert);
         fullName = findViewById(R.id.full_name_edit_text);
         nid = findViewById(R.id.nid_edit_text);
-        contactNo = findViewById(R.id.phone_edit_text);
+        //TODO change nid to numbertype
+        contactNo = findViewById(R.id.contact_no_edit_text);
         members = findViewById(R.id.members_edit_text);
         earningMembers = findViewById(R.id.earning_members_edit_text);
         addButton = findViewById(R.id.add_button);
-        
+        addAndNextButton = findViewById(R.id.add_and_next_button);
+        addressTextView = findViewById(R.id.address_text_view);
+        addressTextView.setText("Address: "+getIntent().getExtras().getString("district")+","+getIntent().getExtras().getString("area")+","+getIntent().getExtras().getString("address"));
+
+        latitude = new AppLocationService(FamilyRegistration.this).getLocation().getLatitude();
+        longitude = new AppLocationService(FamilyRegistration.this).getLocation().getLongitude();
+        //TODO change buttton color
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,23 +123,22 @@ public class FamilyRegistration extends AppCompatActivity {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         byte[] imageBytes = baos.toByteArray();
                         final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                        final String imageString1 = Base64.encodeToString(imageBytes, Base64.CRLF);
-
                         Map<String,String> params = new HashMap<>();
-                        params.put("division_id","7");
-                        params.put("district_id","24");
-                        params.put("area_id","2");
-                        params.put("address","andarkilla");
-                        params.put("nid","12345678901234");
-                        params.put("members_in_family","5");
-                        params.put("earning_members","2");
+                        params.put("division_id",getIntent().getExtras().getString("divisionId"));
+                        params.put("district_id",getIntent().getExtras().getString("districtId"));
+                        params.put("area_id",getIntent().getExtras().getString("areaId"));
+                        params.put("address",getIntent().getExtras().getString("address"));
+                        params.put("nid",nid.getText().toString());
+                        params.put("members_in_family",members.getText().toString());
+                        params.put("earning_members",earningMembers.getText().toString());
                       //  params.put("Earnings_member","2");
-                        params.put("lat","1.344347");
-                        params.put("long","1234");
+                        params.put("lat",latitude+"");
+                        params.put("long",longitude+"");
                         params.put("image",imageString);
                         System.out.println(imageString);
-                        params.put("contact_no","12345678921");
-                        params.put("date_given","1978-04-25");
+                        params.put("contact_no",contactNo.getText().toString());
+                        params.put("date_given",""+new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+                        //TODO fix given by id
                         params.put("given_by","1");
                         params.put("given_to","1");
                         return params;
@@ -171,7 +195,6 @@ public class FamilyRegistration extends AppCompatActivity {
         super.onBackPressed();
         return true;
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -202,15 +225,10 @@ public class FamilyRegistration extends AppCompatActivity {
         byte[] imagebyte=byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imagebyte, Base64.DEFAULT);
     }
-
-
-
-
     public void chooseImage(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
-
     private void onCaptureImageResult(Intent data) {
         bitmap = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -247,8 +265,7 @@ public class FamilyRegistration extends AppCompatActivity {
 
         imageView.setImageBitmap(bm);
     }
-    private boolean isFormValid()
-    {
+    private boolean isFormValid() {
         boolean valid = true;
         if(fullName.getText().toString().length()==0 || (!fullName.getText().toString().contains(" ")))
         {
@@ -296,5 +313,50 @@ public class FamilyRegistration extends AppCompatActivity {
             earningMembers.setError("Please check");
         }
         return valid;
+    }
+    public void setProgressDialog() {
+
+        int llPadding = 30;
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.HORIZONTAL);
+        ll.setPadding(llPadding, llPadding, llPadding, llPadding);
+        ll.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams llParam = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        llParam.gravity = Gravity.CENTER;
+        ll.setLayoutParams(llParam);
+
+        ProgressBar progressBar = new ProgressBar(this);
+        progressBar.setIndeterminate(true);
+        progressBar.setPadding(0, 0, llPadding, 0);
+        progressBar.setLayoutParams(llParam);
+
+        llParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        llParam.gravity = Gravity.CENTER;
+        TextView tvText = new TextView(this);
+        tvText.setText("Loading ...");
+        tvText.setTextColor(Color.parseColor("#000000"));
+        tvText.setTextSize(20);
+        tvText.setLayoutParams(llParam);
+
+        ll.addView(progressBar);
+        ll.addView(tvText);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setView(ll);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(dialog.getWindow().getAttributes());
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setAttributes(layoutParams);
+        }
     }
 }

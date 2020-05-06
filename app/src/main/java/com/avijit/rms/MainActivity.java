@@ -8,14 +8,21 @@ import androidx.core.content.ContextCompat;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.avijit.rms.data.local.AppDatabase;
+import com.avijit.rms.data.local.entities.User;
 import com.avijit.rms.utils.AppUtils;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+import java.util.concurrent.Executors;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -31,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         wantToDonateButton = findViewById(R.id.want_to_donate_button);
         needHelpButton = findViewById(R.id.need_help_button);
 
@@ -45,7 +54,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 //startActivity(new Intent(getApplicationContext(),SearchByNid.class));
-                return false;
+
+                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        AppDatabase db = AppDatabase.getInstance(MainActivity.this);
+
+                       // db.userDao().insertAll(new User(1,"Avijit"));
+                        List<User> list = db.userDao().getAll();
+                        System.out.println(list.get(0).name);
+                      //  Toast.makeText(MainActivity.this, db.userDao().getAll().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+
+                return true;
             }
         });
         needHelpButton.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        AppUtils appUtils = new AppUtils();
+        AppUtils appUtils = new AppUtils(MainActivity.this);
 
         requestPermission();
 

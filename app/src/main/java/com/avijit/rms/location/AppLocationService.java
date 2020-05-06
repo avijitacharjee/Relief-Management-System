@@ -26,7 +26,7 @@ import static android.Manifest.permission.CAMERA;
 
 public class AppLocationService extends Service implements LocationListener {
     protected LocationManager locationManager;
-    public Location location;
+    private Location location;
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     private static final long MIN_DISTANCE_FOR_UPDATE = 0;
@@ -39,7 +39,8 @@ public class AppLocationService extends Service implements LocationListener {
 
     }
 
-    public Location getLocation(String provider) {
+    public Location getLocation() {
+        String provider = LocationManager.NETWORK_PROVIDER;
         if (locationManager.isProviderEnabled(provider)) {
             /*if(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)!= PackageManager
             .PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION)!=PackageManager.PERMISSION_GRANTED)

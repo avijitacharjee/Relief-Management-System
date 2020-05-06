@@ -10,7 +10,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
+import com.avijit.rms.data.local.daos.UserDao;
+import com.avijit.rms.data.local.entities.User;
 
+@Database(entities = {User.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "app_db";
     private static AppDatabase instance;
@@ -21,5 +24,5 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return instance;
     }
-    public abstract AppDatabase appDao();
+    public abstract UserDao userDao();
 }

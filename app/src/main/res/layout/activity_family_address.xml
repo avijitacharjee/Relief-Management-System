@@ -44,7 +44,6 @@
             <Spinner
                 android:id="@+id/type_spinner"
                 android:layout_width="match_parent"
-                android:hint="Full Name"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>
 
@@ -75,9 +74,9 @@
             app:hintTextColor="@color/black">
 
             <EditText
-                android:id="@+id/area_edit_text"
+                android:id="@+id/address_edit_text"
                 android:layout_width="match_parent"
-                android:hint="Area"
+                android:hint="Address"
                 android:background="@color/white"
                 android:padding="10dp"
                 android:textColor="@color/black"

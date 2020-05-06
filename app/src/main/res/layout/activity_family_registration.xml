@@ -26,6 +26,7 @@
                 android:layout_margin="20dp"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/address_text_view"
                     android:textColor="@color/black"
                     android:text="Address: "
                     android:background="@color/white"
@@ -151,26 +152,70 @@
                     android:id="@+id/imageinsert"
                     android:layout_width="100dp"
                     android:layout_height="100dp"></ImageView>
-                <Button
+                <TextView
                     android:id="@+id/img"
-                    android:textSize="10sp"
-                    android:layout_width="0dp"
+                    android:textSize="22sp"
+                    android:layout_width="wrap_content"
+                    android:padding="16dp"
+                    android:background="@drawable/shape1"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:text="Take Photo"
                     />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/shape1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/add_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="30dp"
+                        android:text="Add"
+                        android:layout_gravity="end"
+                        android:paddingRight="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textSize="22sp"
+                        android:transitionName="tran4"
+                        android:background="@color/black"
+                        android:textColor="#fff"/>
+                </LinearLayout>
 
-            <Button
-                android:id="@+id/add_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add"
-                android:layout_gravity="end"
-                android:transitionName="tran4"
-                android:background="#000000"
-                android:textColor="#fff"
-                android:layout_margin="20dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@drawable/shape1"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/add_and_next_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:elevation="30dp"
+                        android:text="Add and next"
+                        android:layout_gravity="end"
+                        android:paddingRight="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textSize="22sp"
+                        android:transitionName="tran4"
+                        android:background="@color/black"
+                        android:textColor="#fff"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+
 
         </LinearLayout>
 

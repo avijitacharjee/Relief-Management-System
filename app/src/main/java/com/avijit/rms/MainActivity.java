@@ -16,11 +16,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.avijit.rms.data.local.AppDatabase;
+import com.avijit.rms.data.local.entities.Area;
+import com.avijit.rms.data.local.entities.District;
+import com.avijit.rms.data.local.entities.Division;
 import com.avijit.rms.data.local.entities.User;
 import com.avijit.rms.utils.AppUtils;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -50,26 +62,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        setLocations();
+
+
+
         wantToDonateButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                //startActivity(new Intent(getApplicationContext(),SearchByNid.class));
 
-                Executors.newSingleThreadExecutor().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        AppDatabase db = AppDatabase.getInstance(MainActivity.this);
-
-                       // db.userDao().insertAll(new User(1,"Avijit"));
-                        List<User> list = db.userDao().getAll();
-                        System.out.println(list.get(0).name);
-                      //  Toast.makeText(MainActivity.this, db.userDao().getAll().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-
+                        AppDatabase db = AppDatabase.getInstance(MainActivity.this);
+                        List<Division> divisions = db.divisionDao().getAll();
+                        List<District> districts = db.districtDao().getAll();
+                        List<Area> areas = db.areaDao().getAll();
+                        System.out.println(divisions);
                     }
                 });
 
@@ -87,6 +95,78 @@ public class MainActivity extends AppCompatActivity {
 
         requestPermission();
 
+    }
+    public void setLocations(){
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        String url = "https://aniksen.me/covidbd/api/locations";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    final AppDatabase db = AppDatabase.getInstance(MainActivity.this);
+
+                    List<Division> divisionList = new ArrayList<>();
+                    List<District> districtList = new ArrayList<>();
+                    List<Area> areaList = new ArrayList<>();
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray locations = jsonObject.getJSONArray("locations");
+                    for(int i=0;i<locations.length();i++)
+                    {
+                        JSONObject divisionResponse = locations.getJSONObject(i);
+                        final Division division = new Division(divisionResponse.getString("division_id"),divisionResponse.getString("division_name"));
+                        divisionList.add(division);
+                        JSONArray districts = divisionResponse.getJSONArray("districts");
+                        for(int j =0;j<districts.length();j++)
+                        {
+                            JSONObject districtResponse = districts.getJSONObject(j);
+                            final com.avijit.rms.data.local.entities.District district ;
+                            district = new District(districtResponse.getString("district_id"),divisionResponse.getString("division_id"),districtResponse.getString("district_name"));
+                            districtList.add(district);
+                            JSONArray areas = districtResponse.getJSONArray("areas");
+                            for(int k=0;k<areas.length();k++)
+                            {
+                                JSONObject areaResponse = areas.getJSONObject(k);
+                                final Area area = new Area(district.districtId,areaResponse.getString("area_id"),areaResponse.getString("area"),areaResponse.getString("area_type"));
+                                areaList.add(area);
+                            }
+                        }
+                    }
+                    final Division[] divisions = new Division[divisionList.size()];
+                    final District[] districts = new District[districtList.size()];
+                    final Area[] areas = new Area[areaList.size()];
+                    for(int i=0;i<divisionList.size();i++)
+                    {
+                        divisions[i] = divisionList.get(i);
+                    }
+                    for(int i=0;i<districtList.size();i++)
+                    {
+                        districts[i] = districtList.get(i);
+                    }
+                    for(int i=0;i<areaList.size();i++)
+                    {
+                        areas[i] = areaList.get(i);
+                    }
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            AppDatabase db = AppDatabase.getInstance(MainActivity.this);
+                            db.divisionDao().deleteAll();
+                            db.districtDao().deleteAll();
+                            db.areaDao().deleteAll();
+
+                            db.divisionDao().insertAll(divisions);
+                            db.districtDao().insertAll(districts);
+                            db.areaDao().insert(areas);
+                        }
+                    });
+
+                }catch (Exception e){
+                    Toast.makeText(MainActivity.this, ""+e, Toast.LENGTH_SHORT).show();
+                }
+            }
+        },new AppUtils(MainActivity.this).errorListener);
+        stringRequest.setRetryPolicy(AppUtils.STRING_REQUEST_RETRY_POLICY);
+        queue.add(stringRequest);
     }
 
 

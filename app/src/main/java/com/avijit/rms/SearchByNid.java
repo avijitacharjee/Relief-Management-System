@@ -40,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.avijit.rms.adapters.SearchByNidRecyclerViewAdapter;
+import com.avijit.rms.utils.AppUtils;
 import com.avijit.rms.viewmodels.ReliefVM;
 import com.google.android.material.navigation.NavigationView;
 
@@ -82,6 +83,7 @@ public class SearchByNid extends AppCompatActivity {
                 return false;
             }
         });
+
         appBarConfiguration = new AppBarConfiguration.Builder().setDrawerLayout(drawer).build();
         toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -104,7 +106,7 @@ public class SearchByNid extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
+        navigation.setNavigationItemSelectedListener(new AppUtils(this).navigationItemSelectedListener);
 
         fetchData("1");
         searchByNidRecyclerViewAdapter = new SearchByNidRecyclerViewAdapter(names,nids,contacts);
@@ -141,8 +143,9 @@ public class SearchByNid extends AppCompatActivity {
         getSupportActionBar().setTitle("Search Recent Records");
         Toast.makeText(this, "", Toast.LENGTH_SHORT).show();*/
     }
-    private void fetchData(String param)
-    {
+
+
+    private void fetchData(String param) {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://aniksen.me/covidbd/api/relief/"+param;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -258,8 +261,7 @@ public class SearchByNid extends AppCompatActivity {
                 .density;
         return Math.round((float) dp * density);
     }
-    public void loadData()
-    {
+    public void loadData() {
         int leftRowMargin =0;
         int topRowMargin =0;
         int rightRowMargin =0;

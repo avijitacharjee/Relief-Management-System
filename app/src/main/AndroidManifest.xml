@@ -19,7 +19,7 @@
 
         <activity
             android:name=".AddDonateSchedule"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar"
             />
         <activity
             android:name=".SearchRecentRecords"

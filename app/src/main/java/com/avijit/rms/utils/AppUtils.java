@@ -1,7 +1,12 @@
 package com.avijit.rms.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,7 +16,10 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.avijit.rms.AddDonateSchedule;
 import com.avijit.rms.MainActivity;
+import com.avijit.rms.R;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Map;
 
@@ -64,6 +72,32 @@ public class AppUtils {
         @Override
         public void retry(VolleyError error) throws VolleyError {
 
+        }
+    };
+    public final NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            int id = item.getItemId();
+            switch (id)
+            {
+                case R.id.logout: {
+                                    context.getSharedPreferences("RMS",MODE_PRIVATE).edit().putString("token","").apply();
+                                    context.startActivity(new Intent(context,MainActivity.class));
+                                  }break;
+                case R.id.home: {
+                    context.startActivity(new Intent(context,MainActivity.class));
+                }break;
+                case R.id.nav_add_donate_schedule: {
+                    context.startActivity(new Intent(context, AddDonateSchedule.class));
+                }
+            }
+            return true;
+        }
+    };
+    public final Response.ErrorListener errorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Toast.makeText(context, ""+error, Toast.LENGTH_SHORT).show();
         }
     };
 

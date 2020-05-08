@@ -25,6 +25,7 @@
         <item name="itemIconTint">@color/anik2</item>
         <item name="itemTextColor">@color/anik2</item>
         <item name="itemBackground">@color/anik1</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
 

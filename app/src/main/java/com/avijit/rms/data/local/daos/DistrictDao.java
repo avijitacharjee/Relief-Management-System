@@ -17,6 +17,6 @@ public interface DistrictDao {
     void insertAll(District... districts);
     @Query("DELETE FROM District")
     void deleteAll();
-    @Query("SELECT * FROM District where districtId=(:id)")
+    @Query("SELECT * FROM District where divisionId=(:id)")
     List<District> getDistrictByDivisionId(String id);
 }

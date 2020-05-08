@@ -17,6 +17,8 @@
         android:layout_height="match_parent"
         android:id="@+id/nav_view"
         android:layout_gravity="end"
+        style="@style/Widget.Custom.NavigationView"
+        android:background="@color/anik1"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_pending_request"
         app:menu="@menu/activity_pending_request_drawer"

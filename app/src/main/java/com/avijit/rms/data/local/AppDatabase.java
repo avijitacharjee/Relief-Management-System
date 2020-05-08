@@ -19,7 +19,7 @@ import com.avijit.rms.data.local.entities.District;
 import com.avijit.rms.data.local.entities.Division;
 import com.avijit.rms.data.local.entities.User;
 
-@Database(entities = {User.class, Division.class, District.class, Area.class},version = 3 ,exportSchema = true)
+@Database(entities = {User.class, Division.class, District.class, Area.class},version = 3 ,exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "app_db";
     private static AppDatabase instance;

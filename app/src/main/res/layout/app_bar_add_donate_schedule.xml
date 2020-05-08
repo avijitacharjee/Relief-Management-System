@@ -8,11 +8,11 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutDirection="rtl"
         android:theme="@style/AppTheme.AppBarOverlay"
         >
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            android:gravity="left"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"

@@ -13,4 +13,9 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
+    <string name="contact">Contact</string>
+    <string name="about">About</string>
+    <string name="log_out">Log out</string>
+    <string name="add_a_schedule">Add a schedule</string>
+    <string name="home">Home</string>
 </resources>

@@ -18,4 +18,7 @@
     <string name="log_out">Log out</string>
     <string name="add_a_schedule">Add a schedule</string>
     <string name="home">Home</string>
+    <string name="show_pending_schedule">Show pending schedule</string>
+    <string name="show_com_schedule">Show completed schedules</string>
+    <string name="content_search_by_nid">content search by nid</string>
 </resources>

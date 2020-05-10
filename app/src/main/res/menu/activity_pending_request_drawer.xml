@@ -13,6 +13,14 @@
             android:icon="@drawable/ic_schedule_black_24dp"
             android:title="@string/add_a_schedule"/>
         <item
+            android:id="@+id/nav_show_pending_donate_schedule"
+            android:icon="@drawable/ic_schedule_black_24dp"
+            android:title="@string/show_pending_schedule"/>
+        <item
+            android:id="@+id/nav_show_completed_donate_schedule"
+            android:icon="@drawable/ic_schedule_black_24dp"
+            android:title="@string/show_com_schedule"/>
+        <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="@string/log_out" />

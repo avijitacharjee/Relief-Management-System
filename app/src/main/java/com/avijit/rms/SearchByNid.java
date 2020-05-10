@@ -15,6 +15,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -107,7 +108,7 @@ public class SearchByNid extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         navigation.setNavigationItemSelectedListener(new AppUtils(this).navigationItemSelectedListener);
-
+        saveUserInfo();
         fetchData("1");
         searchByNidRecyclerViewAdapter = new SearchByNidRecyclerViewAdapter(names,nids,contacts);
         recyclerView.setAdapter(searchByNidRecyclerViewAdapter);
@@ -143,11 +144,34 @@ public class SearchByNid extends AppCompatActivity {
         getSupportActionBar().setTitle("Search Recent Records");
         Toast.makeText(this, "", Toast.LENGTH_SHORT).show();*/
     }
+    public void saveUserInfo(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://aniksen.me/covidbd/api/user";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                getSharedPreferences("RMS",MODE_PRIVATE).edit().putString("user",response).apply();}
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(SearchByNid.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Authorization","Bearer "+getSharedPreferences("RMS",MODE_PRIVATE).getString("token",""));
+                return headers;
+            }
+        };
+        stringRequest.setRetryPolicy(AppUtils.STRING_REQUEST_RETRY_POLICY);
+        queue.add(stringRequest);
+    }
 
 
     private void fetchData(String param) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://aniksen.me/covidbd/api/relief/"+param;
+        String url = "https://aniksen.me/covidbd/api/relief/search/"+param;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -189,6 +213,7 @@ public class SearchByNid extends AppCompatActivity {
                 return headers;
             }
         };
+        stringRequest.setRetryPolicy(AppUtils.STRING_REQUEST_RETRY_POLICY);
         queue.add(stringRequest);
     }
     private void whiteNotificationBar(View view) {

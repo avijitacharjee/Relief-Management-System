@@ -1,0 +1,116 @@
+<androidx.drawerlayout.widget.DrawerLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        tools:context=".SearchByNid"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/black"
+                style="@style/AppTheme.PopupOverlay"
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/anik1"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:showIn="@layout/app_bar_search_by_nid"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="@string/content_search_by_nid"
+                android:layout_width="wrap_content"
+                android:textSize="40sp"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:background="@drawable/shape1"
+                android:layout_marginTop="2dp"
+
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                tools:targetApi="lollipop">
+                <TextView
+                    android:id="@+id/name_text_view"
+                    android:gravity="center"
+                    android:background="@color/anik1"
+                    android:textColor="@color/anik2"
+                    android:text="Sl. "
+                    android:fontFamily="@font/oxygen_light"
+                    android:textSize="16sp"
+                    android:layout_height="match_parent"
+                    android:layout_width="80dp"/>
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/nid_text_view"
+                    android:gravity="center"
+                    android:background="@color/anik1"
+                    android:text="Date"
+                    android:fontFamily="@font/oxygen_light"
+                    android:textSize="16sp"
+                    android:textColor="@color/anik2"
+                    android:layout_height="match_parent"
+                    android:layout_width="120dp"/>
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:background="@color/black"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/contact_text_view"
+                    android:gravity="center"
+                    android:background="@color/anik1"
+                    android:text="Name"
+                    android:fontFamily="@font/oxygen_light"
+                    android:textSize="16sp"
+                    android:textColor="@color/anik2"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:background="@color/anik1"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <!-- End of content -->
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        style="@style/Widget.Custom.NavigationView"
+        android:background="@color/anik1"
+        android:layout_width="wrap_content"
+        app:headerLayout="@layout/nav_header_pending_request"
+        android:fitsSystemWindows="true"
+        android:visibility="visible"
+        android:layout_gravity="end"
+        app:menu="@menu/activity_pending_request_drawer"
+        android:layout_height="match_parent"/>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -95,10 +95,6 @@ public class VolunteerLogIn extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
     private boolean checkLogin()
     {

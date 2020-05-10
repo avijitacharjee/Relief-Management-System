@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.avijit.rms.AddDonateSchedule;
 import com.avijit.rms.MainActivity;
 import com.avijit.rms.R;
+import com.avijit.rms.ShowPendingDonateSchedule;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Map;
@@ -36,7 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AppUtils {
     private Context context;
-    public static AlertDialog dialog;
+    public AlertDialog dialog;
 
     public AppUtils(Context context) {
         this.context = context;
@@ -49,6 +50,7 @@ public class AppUtils {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
                 System.out.println(response);
                 context.getSharedPreferences("RMS",MODE_PRIVATE).edit().putString("locations",response).apply();
             }
@@ -77,7 +79,7 @@ public class AppUtils {
 
         @Override
         public int getCurrentRetryCount() {
-            return 50000;
+            return 5;
         }
 
         @Override
@@ -94,12 +96,19 @@ public class AppUtils {
                 case R.id.logout: {
                     context.getSharedPreferences("RMS",MODE_PRIVATE).edit().putString("token","").apply();
                     context.startActivity(new Intent(context,MainActivity.class));
-                }break;
+                    break;
+                }
                 case R.id.home: {
                     context.startActivity(new Intent(context,MainActivity.class));
-                }break;
+                    break;
+                }
                 case R.id.nav_add_donate_schedule: {
                     context.startActivity(new Intent(context, AddDonateSchedule.class));
+                    break;
+                }
+                case R.id.nav_show_pending_donate_schedule: {
+                    context.startActivity(new Intent(context, ShowPendingDonateSchedule.class));
+                    break;
                 }
             }
             return true;
@@ -109,7 +118,7 @@ public class AppUtils {
         @Override
         public void onErrorResponse(VolleyError error) {
             Toast.makeText(context, ""+error, Toast.LENGTH_SHORT).show();
-            if(AppUtils.dialog.isShowing()){
+            if(dialog.isShowing()){
                 dialog.dismiss();
             }
         }

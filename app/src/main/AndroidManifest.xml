@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ShowDonateSchedule"></activity>
+        <activity android:name=".ShowCompletedDonateSchedule" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ShowPendingDonateSchedule"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".AddDonateSchedule"
             android:theme="@style/AppTheme.NoActionBar" />

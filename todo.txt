@@ -9,4 +9,4 @@
 10.table design .
 11.splash screen with animation.
 12.Add donete schedule activity
-13.
+13.show_donate_schedule_activity

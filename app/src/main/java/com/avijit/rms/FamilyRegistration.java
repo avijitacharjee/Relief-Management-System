@@ -124,6 +124,7 @@ public class FamilyRegistration extends AppCompatActivity {
                         byte[] imageBytes = baos.toByteArray();
                         final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
                         Map<String,String> params = new HashMap<>();
+                        //TODO fix location crash
                         params.put("division_id",getIntent().getExtras().getString("divisionId"));
                         params.put("district_id",getIntent().getExtras().getString("districtId"));
                         params.put("area_id",getIntent().getExtras().getString("areaId"));

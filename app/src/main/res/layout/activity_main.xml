@@ -9,39 +9,62 @@
 
     android:gravity="center"
     tools:context=".MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:elevation="20dp"
+        android:background="@drawable/shape1"
+        android:layout_margin="25dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@color/white_1"
+                android:layout_height="match_parent">
 
 
-    <com.google.android.material.textview.MaterialTextView
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:paddingLeft="35dp"
-        android:paddingRight="35dp"
-        android:fontFamily="@font/oxygen_light"
-        android:id="@+id/want_to_donate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="10dp"
-        android:background="@color/anik2"
-        android:text="Want to donate"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:layout_gravity="center" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="35dp"
+                    android:fontFamily="@font/oxygen_light"
+                    android:gravity="center"
+                    android:id="@+id/want_to_donate_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="10dp"
+                    android:background="@color/anik2"
+                    android:text="Want to donate"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:layout_gravity="center" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_margin="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:layout_gravity="center"
-        android:paddingLeft="35dp"
-        android:elevation="10dp"
-        android:paddingRight="35dp"
-        android:fontFamily="@font/oxygen_light"
-        android:id="@+id/need_help_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/anik2"
-        android:text="Need Help"
-        android:textColor="@color/white"
-        android:textSize="30sp" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_margin="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:layout_gravity="center"
+                    android:paddingLeft="35dp"
+                    android:gravity="center"
+                    android:elevation="10dp"
+                    android:paddingRight="35dp"
+                    android:fontFamily="@font/oxygen_light"
+                    android:id="@+id/need_help_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/anik2"
+                    android:text="Need Help"
+                    android:textColor="@color/white"
+                    android:textSize="30sp" />
 
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

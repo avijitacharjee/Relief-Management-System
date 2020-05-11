@@ -21,4 +21,6 @@
     <string name="show_pending_schedule">Show pending schedule</string>
     <string name="show_com_schedule">Show completed schedules</string>
     <string name="content_search_by_nid">content search by nid</string>
+    <string name="total_cases">Total cases:</string>
+    <string name="next">Next</string>
 </resources>

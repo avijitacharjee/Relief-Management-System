@@ -16,9 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ShowCompletedDonateSchedule" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ShowPendingDonateSchedule"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Dashboard" />
+        <activity
+            android:name=".ShowCompletedDonateSchedule"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowPendingDonateSchedule"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddDonateSchedule"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -44,17 +49,15 @@
         <activity android:name=".FamilyRegistration" />
         <activity android:name=".VolunteerSignUp" />
         <activity android:name=".VolunteerLogIn" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>

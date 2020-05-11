@@ -37,7 +37,8 @@ import java.util.Map;
 
 public class VolunteerSignUp extends AppCompatActivity {
     ProgressDialog progressDialog;
-    Button loginIntentButton,goButton;
+    Button loginIntentButton;
+    TextView goButton;
     ImageView logoImage;
     TextInputLayout tran2,tran3;
     Spinner typeSpinner;
@@ -64,8 +65,10 @@ public class VolunteerSignUp extends AppCompatActivity {
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
-                ((TextView) parent.getChildAt(0)).setBackgroundColor(Color.WHITE);
+                try {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+                    ((TextView) parent.getChildAt(0)).setBackgroundColor(Color.WHITE);
+                }catch (Exception e) {}
             }
 
             @Override

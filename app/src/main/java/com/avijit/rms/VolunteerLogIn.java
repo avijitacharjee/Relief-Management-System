@@ -20,6 +20,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -42,7 +43,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VolunteerLogIn extends AppCompatActivity {
-    private Button logInButton,signUpIntentButton;
+    private Button signUpIntentButton;
+    TextView logInButton;
     private EditText userNameEditText,passwordEditText;
     ImageView logoImage;
     TextInputLayout tran2,tran3;

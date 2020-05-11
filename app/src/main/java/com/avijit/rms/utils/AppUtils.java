@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.avijit.rms.AddDonateSchedule;
 import com.avijit.rms.MainActivity;
 import com.avijit.rms.R;
+import com.avijit.rms.ShowCompletedDonateSchedule;
 import com.avijit.rms.ShowPendingDonateSchedule;
 import com.google.android.material.navigation.NavigationView;
 
@@ -108,6 +109,10 @@ public class AppUtils {
                 }
                 case R.id.nav_show_pending_donate_schedule: {
                     context.startActivity(new Intent(context, ShowPendingDonateSchedule.class));
+                    break;
+                }
+                case R.id.nav_show_completed_donate_schedule: {
+                    context.startActivity(new Intent(context, ShowCompletedDonateSchedule.class));
                     break;
                 }
             }
